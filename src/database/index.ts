@@ -1,26 +1,13 @@
-import {Db, MongoClient} from "mongodb"
-import config from "../config/index"
+import mongoose from "mongoose"
+import config from "../config"
+const url:string = config.mongoUrl!
 
-export default class MongoLib{
-    private Client: MongoClient
-    private dbName: any = config.dbName
-    private mongoURL: any = config.mongoUrl
-    private static connection: Db
-    constructor(){
-        this.Client = new MongoClient(this.mongoURL,{
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        })
-    }
-    async connect(){
-        if(!MongoLib.connection){
-            try {
-                await this.Client.connect()
-                console.log("connected to database")
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        return MongoLib.connection
-    }
-}
+mongoose.connect(url,{
+    useCreateIndex: true,
+    useNewUrlParser: true
+})
+    .then((db:any)=>console.log("database connected"))
+    .catch((err:any)=>console.log(err))
+    
+
+export default mongoose

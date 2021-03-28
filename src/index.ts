@@ -3,15 +3,19 @@ import express from "express"
 import cors from "cors"
 import {ApolloServer} from "apollo-server-express"
 import MongoLib from "./database"
+import  mongoose  from './database';
 
 const app = express()
 app.use(cors())
 
 const server = new ApolloServer({
     schema,
-    playground: true,
-    introspection: true,
-    context: async()=> new MongoLib().connect()
+    context: async ({req}) => {
+        mongoose
+        // get the authorization from the request headers
+        // return a context obj with our token. if any!
+        //auth
+    }
 })
 
 server.applyMiddleware({app})
