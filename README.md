@@ -7,7 +7,7 @@
 -  **reflect-metadata**: Some decorators to implement with "typeorm"
 
 ## How to start
-- ### First of all clone this repository:  `git clone <url>`
+- ### First of all clone this repository:  `git clone https://github.com/gustavom12/RecipesChallenge.git`
 - ### Run `npm i` to install all dependencies
 
 ## Config database: 
