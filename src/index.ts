@@ -1,27 +1,20 @@
-import { schema } from './graphql/index';
-import express from "express"
-import cors from "cors"
-import {ApolloServer} from "apollo-server-express"
-import MongoLib from "./database"
-import  mongoose  from './database';
+import express from 'express';
+import config from './config/config';
+import cors from 'cors';
+import { graphqlServer } from "./graphql";
+import { connectDB } from './config/typeorm';
 
-const app = express()
-app.use(cors())
+const startServer = async () => {
+  connectDB()
+  const app = express();
+  app.use(cors());
 
-const server = new ApolloServer({
-    schema,
-    context: async ({req}) => {
-        mongoose
-        // get the authorization from the request headers
-        // return a context obj with our token. if any!
-        //auth
-    }
-})
+  const server = await graphqlServer()
+  server.applyMiddleware({ app, path: config.graphqlPath });
 
-server.applyMiddleware({app})
-
-const port = process.env.PORT || 3000
-
-app.listen(port,()=>{
-    console.log("app inicializada")
-})
+  const port = config.port;
+  app.listen(port, () => {
+    console.log(`server started go to "http://localhost:${port}${config.graphqlPath}" to see it`);
+  });
+};
+startServer()
